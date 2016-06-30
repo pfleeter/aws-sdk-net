@@ -576,8 +576,8 @@ namespace Amazon.CognitoSync.SyncManager.Internal
                 {
                     UpdateOrInsertRecord(identityId, datasetName, record);
                 }
-            }
-        }
+                    }
+                }
 
         /// <summary>
         /// Deletes a dataset. All the records associated with dataset are cleared and 
@@ -884,7 +884,8 @@ namespace Amazon.CognitoSync.SyncManager.Internal
                         + " SET "
                         + DatasetColumns.IDENTITY_ID + " = '" + newIdentityId + "', "
                         + DatasetColumns.DATASET_NAME + " = "
-                        + DatasetColumns.DATASET_NAME + " || '." + oldIdentityId + "'"
+                        + DatasetColumns.DATASET_NAME + " || '." + oldIdentityId + "', "
+                        + DatasetColumns.LAST_SYNC_COUNT + " = 1" // set the sync count to one, because that is what the server did
                         + " WHERE " + DatasetColumns.IDENTITY_ID + " = @" + DatasetColumns.IDENTITY_ID + " ";
 
                     statements.Add(new Statement
