@@ -154,7 +154,7 @@ namespace Amazon.CognitoSync.SyncManager.Internal
             else if (ase.GetType() == typeof(AmazonCognitoSyncException)
                 && ase.StatusCode == System.Net.HttpStatusCode.BadRequest
                 && ase.ErrorCode.Equals("InvalidParameterException")
-                && message.StartsWith("Current SyncCount for:"))
+                && ase.Message != null && ase.Message.StartsWith("Current SyncCount for:"))
             {
                 // iOS case (it seems)
                 return new DataConflictException(message);
@@ -162,7 +162,7 @@ namespace Amazon.CognitoSync.SyncManager.Internal
             else if (ase.GetType() == typeof(AmazonCognitoSyncException)
                 && ase.StatusCode == System.Net.HttpStatusCode.OK
                 && ase.ErrorCode.Equals("ResourceConflictException")
-                && message.StartsWith("Current SyncCount for:"))
+                && ase.Message != null && ase.Message.StartsWith("Current SyncCount for:"))
             {
                 // Android case (it seems)
                 return new DataConflictException(message);
