@@ -152,19 +152,9 @@ namespace Amazon.CognitoSync.SyncManager.Internal
             }
             // HACK FIX by PMF
             else if (ase.GetType() == typeof(AmazonCognitoSyncException)
-                && ase.StatusCode == System.Net.HttpStatusCode.BadRequest
-                && ase.ErrorCode.Equals("InvalidParameterException")
-                && ase.Message != null && ase.Message.StartsWith("Current SyncCount for:"))
+                     && ase.Message != null 
+                     && ase.Message.StartsWith("Current SyncCount for:"))
             {
-                // iOS case (it seems)
-                return new DataConflictException(message);
-            }
-            else if (ase.GetType() == typeof(AmazonCognitoSyncException)
-                && ase.StatusCode == System.Net.HttpStatusCode.OK
-                && ase.ErrorCode.Equals("ResourceConflictException")
-                && ase.Message != null && ase.Message.StartsWith("Current SyncCount for:"))
-            {
-                // Android case (it seems)
                 return new DataConflictException(message);
             }
             // END HACK FIX by PMF
