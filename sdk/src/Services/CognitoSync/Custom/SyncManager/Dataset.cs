@@ -691,13 +691,13 @@ namespace Amazon.CognitoSync.SyncManager
         {
 
             //make sure we have the latest identity id
+            try
+            {
 #if BCL35 || UNITY
-            CognitoCredentials.GetIdentityId();
+                CognitoCredentials.GetIdentityId();
 #else
             await CognitoCredentials.GetIdentityIdAsync().ConfigureAwait(false);
 #endif
-            try
-            {
                 bool resume = true;
                 List<string> mergedDatasets = LocalMergedDatasets;
                 if (mergedDatasets.Count > 0)
@@ -730,6 +730,7 @@ namespace Amazon.CognitoSync.SyncManager
             }
             catch (Exception e)
             {
+                EndSynchronizeAndCleanup();
 #if UNITY
                 FireSyncFailureEvent(e, options);
 #else
