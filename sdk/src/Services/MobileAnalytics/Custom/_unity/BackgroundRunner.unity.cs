@@ -91,6 +91,11 @@ namespace Amazon.MobileAnalytics.MobileAnalyticsManager.Internal
                             manager = MobileAnalyticsManager.GetInstance(appId);
                             manager.BackgroundDeliveryClient.AttemptDelivery();
                         }
+                        catch (ThreadAbortException e)
+                        {
+                            // handle thread aborts more gracefully in unity
+                            throw e;
+                        }
                         catch (System.Exception e)
                         {
                             _logger.Error(e, "An exception occurred in Mobile Analytics Delivery Client : {0}", e.ToString());
@@ -103,6 +108,10 @@ namespace Amazon.MobileAnalytics.MobileAnalyticsManager.Internal
                         }
                     }
                     Thread.Sleep(BackgroundSubmissionWaitTime * 1000);
+                }
+                catch(ThreadAbortException)
+                {
+                    // handle thread aborts more gracefully in unity
                 }
                 catch (System.Exception e)
                 {
